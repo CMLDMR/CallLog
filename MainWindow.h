@@ -9,6 +9,9 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+
+class CDRTableModel;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -23,5 +26,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+
+    CDRTableModel   *m_cdrTableModel;
 };
 #endif // MAINWINDOW_H

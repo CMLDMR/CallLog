@@ -125,11 +125,16 @@ void CDRTableModel::updateQueryModel()
     m_querier->startQuery();
 }
 
+void CDRTableModel::setStartDate(const long long &startDate)
+{
+    m_querier->setStartDateTime( startDate );
+}
+
 void CDRTableModel::queriedModel()
 {
-    if( ! m_querier->queryList().size() ) {
-        return;
-    }
+    // if( ! m_querier->queryList().size() ) {
+    //     return;
+    // }
 
     beginResetModel();
     m_list.clear();

@@ -16,6 +16,8 @@ public:
 
     std::vector<CDRTableItem> queryList() const;
 
+    void setStartDateTime(long long newStartJulianDay);
+
 Q_SIGNALS:
 
     void readyQuery();
@@ -29,6 +31,9 @@ private:
     QSqlDatabase m_db;
 
     std::vector<CDRTableItem> m_queryList;
+
+    long long m_startJulianDay;
+
 
 };
 

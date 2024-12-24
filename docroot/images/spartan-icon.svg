@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with sK1/UniConvertor (http://sk1project.org/) -->
+
+<svg
+   width="96"
+   height="96"
+   viewBox="0 0 72 72"
+   fill-rule="evenodd"
+   version="1.1"
+   id="svg291"
+   sodipodi:docname="spartan-icon.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   inkscape:export-filename="spartan-icon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs291" />
+  <sodipodi:namedview
+     id="namedview291"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="pt"
+     inkscape:zoom="3.9660267"
+     inkscape:cx="41.603351"
+     inkscape:cy="93.166292"
+     inkscape:window-width="1440"
+     inkscape:window-height="1243"
+     inkscape:window-x="347"
+     inkscape:window-y="64"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg291" />
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.277176;stroke-opacity:1"
+     id="rect71"
+     width="71.722832"
+     height="71.722824"
+     x="0.13858414"
+     y="0.13858795"
+     rx="0"
+     ry="0" />
+  <g
+     id="g70"
+     transform="matrix(0.09415066,0,0,0.09415068,-0.49354902,5.1105178)">
+    <path
+       style="fill:#2b2920;fill-opacity:1;stroke:#000000;stroke-width:0.850394;stroke-linecap:round;stroke-linejoin:round"
+       d="M 524.432,573.209 V 343.946 l -74.142,34.249 -0.022,191.173 -16.2335,84.9135 90.3975,-81.0725"
+       id="path54"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="fill:#2b2920;fill-opacity:1;stroke:#000000;stroke-width:0.850394;stroke-linecap:round;stroke-linejoin:round"
+       d="m 325.002,569.368 -0.049,-191.173 -74.169,-34.249 v 229.263 l 90.425,81.0725 -16.207,-84.9135"
+       id="path95"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="fill:#2b2920;fill-opacity:1;stroke:#000000;stroke-width:0.850394;stroke-linecap:round;stroke-linejoin:round"
+       d="m 158.122,479.986 c 0,6.629 2.879,12.589 7.451,16.7015 l 66.466,59.56 0.101,-304.9685 132.997,92.813 -22.175,67.225 44.673,37.796 44.646,-37.796 -22.197,-67.21 133.046,-92.828 0.074,304.9685 66.439,-59.56 c 4.572,-4.1125 7.451,-10.0725 7.451,-16.7015 V 170.464 c 0,-7.672 -3.856,-14.45 -9.7345,-18.5005 L 390.151,2.679565 C 389.428,2.18152 388.552,1.88977 387.608,1.88977 c -0.944,0 -1.82,0.29175 -2.543,0.789795 L 167.856,151.9635 c -5.878,4.0505 -9.734,10.8285 -9.734,18.5005 v 309.522"
+       id="path287"
+       sodipodi:nodetypes="ccccccccccccccccscccc" />
+  </g>
+</svg>

@@ -13,12 +13,59 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql Core)
 
 find_package(Libssh REQUIRED)
+find_package( Wt REQUIRED )
+
+# define source and destination folder
+set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/docroot")
+set(DESTINATION_DIR "${CMAKE_BINARY_DIR}/docroot")
+
+# find all files
+file(GLOB ALL_FILES "${SOURCE_DIR}/*")
+
+# # make destination folder
+# file(MAKE_DIRECTORY "${DESTINATION_DIR}")
+
+# define unwanted extensions (example, .log ve .tmp)
+set(EXCLUDED_EXTENSIONS ".TMP" ".tmp")
+
+# copy files via by filtering extensions
+foreach(file ${ALL_FILES})
+    get_filename_component(extension ${file} EXT) # take extensions
+    string(TOLOWER "${extension}" extension)      # extension to lower
+
+    # check file extension
+    set(exclude_file OFF)
+    foreach(excluded_ext ${EXCLUDED_EXTENSIONS})
+        if ("${extension}" STREQUAL "${excluded_ext}")
+            set(exclude_file ON)
+            break()
+        endif()
+    endforeach()
+
+    # copy file if extensions if not exist in list EXCLUDED_EXTENSIONS
+    if (NOT exclude_file)
+        message(STATUS "INFO. ${file} ")
+        if (EXISTS "${file}")
+            file(COPY ${file} DESTINATION "${DESTINATION_DIR}")
+        else()
+                message(STATUS "file not exist: ${file}")
+        endif()
+    endif()
+endforeach()
 
 
-set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/lib/cmake/bsoncxx-3.10.2" ${CMAKE_PREFIX_PATH})
-set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/lib/cmake/mongocxx-3.10.2" ${CMAKE_PREFIX_PATH})
-set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/lib/cmake/mongoc-1.0" ${CMAKE_PREFIX_PATH})
-set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/lib/cmake/bson-1.0" ${CMAKE_PREFIX_PATH})
+
+# file(COPY           ${CMAKE_SOURCE_DIR}/docroot
+#     DESTINATION    ${CMAKE_BINARY_DIR}/)
+
+file(COPY           ${CMAKE_SOURCE_DIR}/approot
+    DESTINATION    ${CMAKE_BINARY_DIR}/)
+
+
+set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/lib/cmake/bsoncxx-3.10.2" ${CMAKE_PREFIX_PATH})
+set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/lib/cmake/mongocxx-3.10.2" ${CMAKE_PREFIX_PATH})
+set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/lib/cmake/mongoc-1.0" ${CMAKE_PREFIX_PATH})
+set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/lib/cmake/bson-1.0" ${CMAKE_PREFIX_PATH})
 
 
 find_package(mongocxx REQUIRED)
@@ -26,8 +73,8 @@ find_package(bsoncxx REQUIRED)
 include_directories(${LIBMONGOCXX_INCLUDE_DIR})
 include_directories(${LIBBSONCXX_INCLUDE_DIR})
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/include/bsoncxx/v_noabi)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/include/mongocxx/v_noabi)
+include_directories(${CMAKE_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/include/bsoncxx/v_noabi)
+include_directories(${CMAKE_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/include/mongocxx/v_noabi)
 
 add_subdirectory(MongoCoreItem)
 
@@ -42,7 +89,7 @@ add_library(MongoCore
     MongoCore/ListItemNoDB.h
 )
 
-target_link_libraries(MongoCore PRIVATE Qt${QT_VERSION_MAJOR}::Core MongoCoreItem)
+target_link_libraries(MongoCore PUBLIC Qt${QT_VERSION_MAJOR}::Core MongoCoreItem mongo::mongocxx_shared)
 
 
 set(PROJECT_SOURCES
@@ -75,11 +122,15 @@ else()
             CDRTableModel.h CDRTableModel.cpp
             CDRTableItem.h CDRTableItem.cpp
             SystemItem.h SystemItem.cpp
+            WebServer.h WebServer.cpp
+            Web/MainApplication.h Web/MainApplication.cpp
+            CDRTableManager.h CDRTableManager.cpp
         )
     endif()
 endif()
 
-target_link_libraries(FREEPBX_MySQLTables PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql ssh MongoCore MongoCoreItem)
+target_link_libraries(FREEPBX_MySQLTables PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql ssh MongoCore wt wthttp)
+target_compile_definitions(FREEPBX_MySQLTables PRIVATE QT_NO_KEYWORDS)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

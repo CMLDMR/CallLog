@@ -21,11 +21,27 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    auto model = new CDRTableModel( ui->tableView );
+    ui->startDateEdit->setDate( QDate::currentDate() );
+    ui->startDateEdit->setTime( QTime( 0 , 0 , 0 ) );
 
-    ui->tableView->setModel( model );
+    m_cdrTableModel = new CDRTableModel( ui->tableView );
 
-    model->updateQueryModel();
+    ui->tableView->setModel( m_cdrTableModel );
+
+    connect( ui->startDateEdit , &QDateTimeEdit::dateTimeChanged , this , [=]( const QDateTime &dateTime ){
+        ui->endDateEdit->setDate( QDate::fromJulianDay( dateTime.date().toJulianDay() ) );
+        ui->endDateEdit->setTime( QTime(23,59,59 ) );
+        m_cdrTableModel->setStartDate( dateTime.date().toJulianDay() );
+
+    });
+
+
+    connect( ui->refreshPushButton , &QPushButton::clicked , this , [=]( ){
+        m_cdrTableModel->updateQueryModel();
+    });
+
+
+    m_cdrTableModel->updateQueryModel();
 
 
 

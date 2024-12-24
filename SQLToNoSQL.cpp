@@ -51,11 +51,11 @@ void SQLToNoSQL::startQuery()
     QSqlQuery query;
 
     // Tarih ve saat aralığını sorgulama
-    QString baslangicTarihSaat = "2024-11-17 00:00:00";
-    QString bitisTarihSaat = "2024-11-17 23:59:59";
+    // QString baslangicTarihSaat = "2024-11-17 00:00:00";
+    // QString bitisTarihSaat = "2024-11-17 23:59:59";
 
-    // QString baslangicTarihSaat = QDate::currentDate().toString("yyyy-MM-dd") + " 00:00:00";
-    // QString bitisTarihSaat = QDate::currentDate().toString("yyyy-MM-dd") + " 23:59:59";
+    QString baslangicTarihSaat = QDate::fromJulianDay( m_startJulianDay ).toString("yyyy-MM-dd") + " 00:00:00";
+    QString bitisTarihSaat = QDate::fromJulianDay( m_startJulianDay + 1 ).toString("yyyy-MM-dd") + " 23:59:59";
 
     query.prepare("SELECT * FROM cdr WHERE calldate BETWEEN :baslangic AND :bitis");
     query.bindValue(":baslangic", baslangicTarihSaat);
@@ -108,10 +108,15 @@ void SQLToNoSQL::startQuery()
 
     }
 
-    if( m_queryList.size() )
+    // if( m_queryList.size() )
         Q_EMIT readyQuery();
 
 
+}
+
+void SQLToNoSQL::setStartDateTime(long long newStartJulianDay)
+{
+    m_startJulianDay = newStartJulianDay;
 }
 
 std::vector<CDRTableItem> SQLToNoSQL::queryList() const

@@ -27,7 +27,20 @@
          </widget>
         </item>
         <item>
-         <widget class="QDateEdit" name="startDateEdit"/>
+         <widget class="QDateEdit" name="startDateEdit">
+          <property name="minimumSize">
+           <size>
+            <width>127</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="displayFormat">
+           <string>dd.MM.yyyy</string>
+          </property>
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -41,7 +54,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QDateEdit" name="endDateEdit"/>
+         <widget class="QDateEdit" name="endDateEdit">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="displayFormat">
+           <string>dd.MM.yyyy hh:mm:ss</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

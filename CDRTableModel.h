@@ -19,6 +19,7 @@ public:
 
 public Q_SLOTS:
     void updateQueryModel();
+    void setStartDate( const long long &startDate );
 
 
 private Q_SLOTS:

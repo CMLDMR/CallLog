@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file>7SEGMENTALDIGITALDISPLAY.ttf</file>
+        <file>LiquidCrystal.txt</file>
+        <file>7SEGMENTALDIGITALDISPLAY.txt</file>
+        <file>LiquidCrystal-BoldItalic.otf</file>
+        <file>LiquidCrystal-NormalItalic.otf</file>
+        <file>LiquidCrystal-Normal.otf</file>
+        <file>LiquidCrystal-Bold.otf</file>
+        <file>scoreboard.txt</file>
+        <file>G7_Cube.txt</file>
+        <file>G7_Cube_5.ttf</file>
+        <file>scoreboard.ttf</file>
+    </qresource>
+</RCC>
