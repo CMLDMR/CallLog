@@ -1,4 +1,6 @@
 
+*.TMP
+
 # https://github.com/emweb/wt/blob/master/.gitignore
 # {
 *~

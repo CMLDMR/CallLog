@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql Core)
 
 find_package(Libssh REQUIRED)
 
@@ -26,6 +26,9 @@ find_package(bsoncxx REQUIRED)
 include_directories(${LIBMONGOCXX_INCLUDE_DIR})
 include_directories(${LIBBSONCXX_INCLUDE_DIR})
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/include/bsoncxx/v_noabi)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/include/mongocxx/v_noabi)
+
 add_subdirectory(MongoCoreItem)
 
 
@@ -38,6 +41,9 @@ add_library(MongoCore
     MongoCore/MongoCore.h MongoCore/MongoCore.cpp
     MongoCore/ListItemNoDB.h
 )
+
+target_link_libraries(MongoCore PRIVATE Qt${QT_VERSION_MAJOR}::Core MongoCoreItem)
+
 
 set(PROJECT_SOURCES
         main.cpp
@@ -67,11 +73,13 @@ else()
             ${PROJECT_SOURCES}
             SQLToNoSQL.h SQLToNoSQL.cpp
             CDRTableModel.h CDRTableModel.cpp
+            CDRTableItem.h CDRTableItem.cpp
+            SystemItem.h SystemItem.cpp
         )
     endif()
 endif()
 
-target_link_libraries(FREEPBX_MySQLTables PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql ssh)
+target_link_libraries(FREEPBX_MySQLTables PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql ssh MongoCore MongoCoreItem)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
