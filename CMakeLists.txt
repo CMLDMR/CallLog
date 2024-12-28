@@ -6,7 +6,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql Core)
@@ -77,6 +77,15 @@ include_directories(${CMAKE_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Re
 include_directories(${CMAKE_SOURCE_DIR}/mongo-cxx-r.3.10.2-mingw-13.1.0-win64/Release/include/mongocxx/v_noabi)
 
 add_subdirectory(MongoCoreItem)
+include_directories(${CMAKE_SOURCE_DIR})
+
+
+add_library(Bootstrap
+    Web/Bootstrap/Bootstrap5ThemeKeys.h
+    Web/Bootstrap/Bootstrap5ThemeKeys.cpp
+    Web/Bootstrap/inlinestyle.h
+    Web/Bootstrap/NavTabs.h
+)
 
 
 add_library(MongoCore
@@ -89,7 +98,7 @@ add_library(MongoCore
     MongoCore/ListItemNoDB.h
 )
 
-target_link_libraries(MongoCore PUBLIC Qt${QT_VERSION_MAJOR}::Core MongoCoreItem mongo::mongocxx_shared)
+target_link_libraries(MongoCore PUBLIC Qt${QT_VERSION_MAJOR}::Core MongoCoreItem mongo::mongocxx_shared Bootstrap)
 
 
 set(PROJECT_SOURCES
@@ -97,6 +106,15 @@ set(PROJECT_SOURCES
         MainWindow.cpp
         MainWindow.h
         MainWindow.ui
+
+        Web/CustomWidget/PushButton.h Web/CustomWidget/PushButton.cpp
+        Web/CustomWidget/ComboBox.h Web/CustomWidget/ComboBox.cpp
+        Web/CustomWidget/Panel.h Web/CustomWidget/Panel.cpp
+        Web/CustomWidget/ContainerWidget.h Web/CustomWidget/ContainerWidget.cpp
+        Web/CustomWidget/Theme.h Web/CustomWidget/Theme.cpp
+        Web/CustomWidget/LineEdit.h Web/CustomWidget/LineEdit.cpp
+        Web/CustomWidget/Text.h Web/CustomWidget/Text.cpp
+        Web/CustomWidget/FileUploaderWidget.h Web/CustomWidget/FileUploaderWidget.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -125,6 +143,11 @@ else()
             WebServer.h WebServer.cpp
             Web/MainApplication.h Web/MainApplication.cpp
             CDRTableManager.h CDRTableManager.cpp
+            Web/CDRTableManagerContainer.h Web/CDRTableManagerContainer.cpp
+            Web/CSSGenerator.h
+            Web/LoginPanel.h Web/LoginPanel.cpp
+            Web/User.h Web/User.cpp
+            Web/UserManager.h Web/UserManager.cpp
         )
     endif()
 endif()

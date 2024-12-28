@@ -291,3 +291,8 @@ int CDRTableItem::sequence() const
     }
     return 0;
 }
+
+void CDRTableItem::setUniqueid(const std::string &uniqueid)
+{
+    append( "uniqueid" , uniqueid );
+}

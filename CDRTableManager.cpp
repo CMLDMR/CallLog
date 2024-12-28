@@ -5,3 +5,13 @@ CDRTableManager::CDRTableManager(MongoCore::DB *db)
 {
 
 }
+
+
+void CDRTableManager::errorOccured(const std::string &errorText)
+{
+}
+
+void CDRTableManager::onList(const std::vector<CDRTableItem> &mlist)
+{
+
+}

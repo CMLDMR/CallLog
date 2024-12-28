@@ -40,6 +40,9 @@ public:
     std::string peeraccount() const;
     int sequence() const;
 
+
+    void setUniqueid( const std::string &uniqueid );
+
 };
 
 #endif // CDRTABLEITEM_H

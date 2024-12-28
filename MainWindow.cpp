@@ -14,6 +14,8 @@
 #include <fstream>
 #include <fcntl.h>
 
+#include "SystemItem.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,10 +23,20 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    try {
+        m_mongoClient = new mongocxx::client(mongocxx::uri( SystemItem::instance()->mongoUrl() ) );
+    } catch ( mongocxx::exception &e) {
+        return;
+    }
+
+    m_database = m_mongoClient->database( "CallerLog" );
+    m_db = new MongoCore::DB( &m_database );
+
+
     ui->startDateEdit->setDate( QDate::currentDate() );
     ui->startDateEdit->setTime( QTime( 0 , 0 , 0 ) );
 
-    m_cdrTableModel = new CDRTableModel( ui->tableView );
+    m_cdrTableModel = new CDRTableModel( m_db , ui->tableView );
 
     ui->tableView->setModel( m_cdrTableModel );
 
@@ -32,7 +44,6 @@ MainWindow::MainWindow(QWidget *parent)
         ui->endDateEdit->setDate( QDate::fromJulianDay( dateTime.date().toJulianDay() ) );
         ui->endDateEdit->setTime( QTime(23,59,59 ) );
         m_cdrTableModel->setStartDate( dateTime.date().toJulianDay() );
-
     });
 
 

@@ -4,12 +4,16 @@
 #include <QAbstractListModel>
 #include "CDRTableItem.h"
 
+#include "MongoCore/db.h"
+
+#include "CDRTableManager.h"
+
 class SQLToNoSQL;
 
 class CDRTableModel : public QAbstractListModel
 {
 public:
-    explicit CDRTableModel(QObject *parent = nullptr);
+    explicit CDRTableModel( MongoCore::DB * db , QObject *parent = nullptr);
 
     // QAbstractItemModel interface
 public:
@@ -24,12 +28,20 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void queriedModel();
+
+
 private:
     std::vector<CDRTableItem> m_list;
 
     SQLToNoSQL *m_querier;
 
     QStringList m_colsName;
+
+    MongoCore::DB   *m_db;
+
+    void insertIfNotExist( const CDRTableItem &item );
+
+    std::unique_ptr<CDRTableManager> m_cdrTableManager;
 
     // QAbstractItemModel interface
 public:

@@ -5,9 +5,12 @@
 
 #include "SQLToNoSQL.h"
 
-CDRTableModel::CDRTableModel(QObject *parent)
+CDRTableModel::CDRTableModel(MongoCore::DB *db, QObject *parent)
     : QAbstractListModel{parent}
+    , m_db( db )
 {
+
+    m_cdrTableManager = std::make_unique<CDRTableManager>( db );
 
     m_querier = new SQLToNoSQL( this );
 
@@ -140,9 +143,9 @@ void CDRTableModel::queriedModel()
     m_list.clear();
 
     for( const auto &item : m_querier->queryList() ) {
-
         m_list.push_back( item );
 
+        insertIfNotExist( item );
     }
 
     if( m_list.size() ) {
@@ -155,6 +158,22 @@ void CDRTableModel::queriedModel()
     }
 
     endResetModel();
+}
+
+void CDRTableModel::insertIfNotExist(const CDRTableItem &item)
+{
+    CDRTableItem filter;
+    filter.setUniqueid( item.uniqueid() );
+
+    auto count = m_cdrTableManager->countItem( filter );
+
+    if( count == 0 ) {
+        auto ins = m_cdrTableManager->InsertItem( item );
+        if( ins.size() ) {
+            qDebug() << "inserted";
+        }
+    }
+
 }
 
 

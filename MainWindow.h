@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 
+#include "MongoCore/db.h"
+#include <mongocxx/client.hpp>
+#include <mongocxx/database.hpp>
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -29,5 +33,10 @@ private:
 
 
     CDRTableModel   *m_cdrTableModel;
+
+    mongocxx::client* m_mongoClient { nullptr };
+    mongocxx::database m_database;;
+
+    MongoCore::DB *m_db;
 };
 #endif // MAINWINDOW_H
