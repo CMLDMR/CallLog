@@ -24,6 +24,10 @@ public:
     std::string sqlTableName() const;
     std::string sqlUserName() const;
     std::string sqlpassword() const;
+    int retrivePeriod() const;
+    std::string sshUsername() const;
+    std::string sshPassword() const;
+
 
 private:
     SystemItem();

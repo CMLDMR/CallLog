@@ -16,13 +16,35 @@
 
 #include "SystemItem.h"
 
+#include "Logger.h"
+
 SQLToNoSQL::SQLToNoSQL(QObject *parent)
     : QObject{parent}
 {
 
+    m_thread = new QThread( this );
+
+    connect( m_thread , &QThread::started , this , &SQLToNoSQL::run );
+}
+
+void SQLToNoSQL::startQuery()
+{
+    if( m_stop )
+        return;
+
+    m_thread->start();
+}
+
+void SQLToNoSQL::run()
+{
 
     QStringList drivers = QSqlDatabase::drivers();
-    qDebug() << "Yüklü sürücüler:" << drivers;
+    QString str = "Yüklü Sürücüler";
+    for( const auto &item : drivers ) {
+        str.append( " " + item );
+    }
+    Logger::instance()->appendInfo( str.toStdString() );
+
 
     // Veritabanı bağlantısı oluştur
     m_db = QSqlDatabase::addDatabase( SystemItem::instance()->sqlDatabaseName().data() );
@@ -32,19 +54,22 @@ SQLToNoSQL::SQLToNoSQL(QObject *parent)
     m_db.setPassword(  SystemItem::instance()->sqlpassword().data() );             // MySQL şifresi
 
     // Veritabanına bağlanmayı dene
-    if (!m_db.open()) {
-        qCritical() << "Veritabanı bağlantı hatası:" << m_db.lastError().text();
+    if ( ! m_db.open() ) {
+        Logger::instance()->appendError( "Veritabanı bağlantı hatası:" + m_db.lastError().text().toStdString() );
         return ;
     }
 
+    retriveData();
+
 }
 
-void SQLToNoSQL::startQuery()
+void SQLToNoSQL::retriveData()
 {
 
+
     // Veritabanına bağlanmayı dene
-    if (!m_db.open()) {
-        qCritical() << "Veritabanı bağlantı hatası:" << m_db.lastError().text();
+    if ( ! m_db.open() ) {
+        Logger::instance()->appendError("Veritabanı bağlantı hatası:" + m_db.lastError().text().toStdString() );
         return ;
     }
 
@@ -55,14 +80,17 @@ void SQLToNoSQL::startQuery()
     // QString bitisTarihSaat = "2024-11-17 23:59:59";
 
     QString baslangicTarihSaat = QDate::fromJulianDay( m_startJulianDay ).toString("yyyy-MM-dd") + " 00:00:00";
-    QString bitisTarihSaat = QDate::fromJulianDay( m_startJulianDay + 1 ).toString("yyyy-MM-dd") + " 23:59:59";
+    QString bitisTarihSaat = QDate::fromJulianDay( m_startJulianDay ).toString("yyyy-MM-dd") + " 23:59:59";
+
+    Logger::instance()->appendInfo( QString("Start Date: %1 End Date: %2").arg( baslangicTarihSaat ).arg( bitisTarihSaat ).toStdString() );
+
 
     query.prepare("SELECT * FROM cdr WHERE calldate BETWEEN :baslangic AND :bitis");
     query.bindValue(":baslangic", baslangicTarihSaat);
     query.bindValue(":bitis", bitisTarihSaat);
 
     if ( ! query.exec() ) {  // Tablo adı yerine kendi tablonuzu yazın
-        qCritical() << "SQL sorgu hatası:" << query.lastError().text();
+        Logger::instance()->appendError("SQL sorgu hatası:" + query.lastError().text().toStdString() );
         return;
     }
 
@@ -78,12 +106,13 @@ void SQLToNoSQL::startQuery()
 
     m_queryList.clear();
 
+    Logger::instance()->appendInfo( QString("Queried Size: %1").arg( query.size() ).toStdString() );
+
     while ( query.next() ) {
 
         CDRTableItem item;
 
         for( int i = 0 ; i < colCount ; i++ ) {
-
             if(  query.value( i ).type() == QVariant::Type::String ) {
                 item.append( cols.at( i ).toStdString() , query.value( i ).toString().toStdString() );
             }
@@ -109,8 +138,10 @@ void SQLToNoSQL::startQuery()
     }
 
     // if( m_queryList.size() )
-        Q_EMIT readyQuery();
+    Q_EMIT readyQuery();
 
+    if( ! m_stop )
+        QTimer::singleShot( SystemItem::instance()->retrivePeriod() , this , &SQLToNoSQL::retriveData );
 
 }
 

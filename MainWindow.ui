@@ -90,6 +90,30 @@
     <item>
      <widget class="QTableView" name="tableView"/>
     </item>
+    <item>
+     <widget class="QCheckBox" name="openLogCheckBox">
+      <property name="text">
+       <string>Log</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPlainTextEdit" name="logPlainTextEdit">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>250</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="clearLogPushButton">
+      <property name="text">
+       <string>Clear Log</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">

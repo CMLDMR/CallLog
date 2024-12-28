@@ -66,14 +66,17 @@ void SystemItem::save()
 void SystemItem::setDefault()
 {
     this->clear();
-    this->append("httpAddress","127.0.0.1");
-    this->append("httpPort","8080");
-    this->append("mongoUrl","mongo://localhost:21017");
-    this->append("sqlDatabaseName","QMARIADB");
-    this->append("sqlHostName","192.168.1.104");
-    this->append("sqlTableName","asteriskcdrdb");
-    this->append("sqlUserName","user");
-    this->append("sqlpassword","123456");
+    this->append( "httpAddress"     ,"127.0.0.1" );
+    this->append( "httpPort"        ,"8080" );
+    this->append( "mongoUrl"        ,"mongo://localhost:21017" );
+    this->append( "sqlDatabaseName" ,"QMARIADB");
+    this->append( "sqlHostName"     ,"192.168.1.105" );
+    this->append( "sqlTableName"    ,"asteriskcdrdb" );
+    this->append( "sqlUserName"     ,"freed" );
+    this->append( "sqlpassword"     ,"123456" );
+    this->append( "retrivePeriod"   ,5000 );
+    this->append( "sshUsername"     ,"root" );
+    this->append( "sshPassword"     ,"1" );
 
     this->save();
 }
@@ -158,6 +161,42 @@ std::string SystemItem::sqlUserName() const
 std::string SystemItem::sqlpassword() const
 {
     auto val = this->element("sqlpassword");
+    if( val ) {
+        if( val.value().view().type() == bsoncxx::type::k_string ) {
+            return val.value().view().get_string().value.data();
+        }
+    }
+    return "";
+}
+
+int SystemItem::retrivePeriod() const
+{
+    auto val = this->element("retrivePeriod");
+    if( val ) {
+        if( val.value().view().type() == bsoncxx::type::k_int32 ) {
+            return val.value().view().get_int32().value;
+        }
+        if( val.value().view().type() == bsoncxx::type::k_int64 ) {
+            return val.value().view().get_int64().value;
+        }
+    }
+    return -1;
+}
+
+std::string SystemItem::sshUsername() const
+{
+    auto val = this->element("sshUsername");
+    if( val ) {
+        if( val.value().view().type() == bsoncxx::type::k_string ) {
+            return val.value().view().get_string().value.data();
+        }
+    }
+    return "";
+}
+
+std::string SystemItem::sshPassword() const
+{
+    auto val = this->element("sshPassword");
     if( val ) {
         if( val.value().view().type() == bsoncxx::type::k_string ) {
             return val.value().view().get_string().value.data();

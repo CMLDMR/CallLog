@@ -27,12 +27,20 @@ public Q_SLOTS:
     void startQuery();
 
 
+private Q_SLOTS:
+    void run();
+    void retriveData();
+
+
 private:
+    QThread *m_thread;
     QSqlDatabase m_db;
 
     std::vector<CDRTableItem> m_queryList;
 
     long long m_startJulianDay;
+
+    bool m_stop{ false };
 
 
 };

@@ -148,6 +148,7 @@ else()
             Web/LoginPanel.h Web/LoginPanel.cpp
             Web/User.h Web/User.cpp
             Web/UserManager.h Web/UserManager.cpp
+            Logger.h Logger.cpp
         )
     endif()
 endif()

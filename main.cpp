@@ -8,6 +8,7 @@
 #include "SystemItem.h"
 
 #include "WebServer.h"
+#include "Logger.h"
 
 
 class logger final : public mongocxx::logger {
@@ -21,6 +22,8 @@ public:
             return;
         // *_stream << "Level: " << level;
         *_stream << '[' << mongocxx::to_string(level) << '@' << domain << "] " << message << '\n';
+        Logger::instance()->appendInfo( QString("[ %1 @ %2 ] %3").arg( mongocxx::to_string(level).data() ).arg( domain.data() ).arg( message.data() ).toStdString() );
+
         qDebug() << '[' << mongocxx::to_string(level).data() << '@' << domain.data() << "] " << message.data() ;
     }
 
@@ -33,6 +36,9 @@ private:
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    Logger::instance();
+
 
     if( ! SystemItem::instance()->loadConfig() ) {
         qDebug() << "Restart After Configuration complete";
