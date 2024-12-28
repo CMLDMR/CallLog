@@ -1,0 +1,82 @@
+username: freepbxuser
+password: oBVRHhkuWmNs
+
+databases
+
+information_schema
+asterisk
+asteriskcdrdb
+mysql
+performance_schema
+test
+
+
+
+
+//Kullanici olusturma
+https://medium.com/@cengizhanc/mysql-kullan%C4%B1c%C4%B1-i%C5%9Flemleri-ekleme-silme-5ac56c22c4d7
+
+
+// kullanici listeleme
+SELECT Host, User FROM mysql.user;
+
+
+Local’den erisecek bir kullanici eklemek;
+CREATE USER ‘ryan’@’localhost’ IDENTIFIED BY ‘babel’;
+GRANT ALL PRIVILEGES ON *.* TO ‘ryan’@’localhost’ WITH GRANT OPTION;
+Heryerden erisecek bir kullanici eklemek;
+CREATE USER ‘ryan’@’%’ IDENTIFIED BY ‘babel’;
+GRANT ALL PRIVILEGES ON *.* TO ‘ryan’@’%’ WITH GRANT OPTION;
+GRANT ALL komutu ile kullanicimiza yetki veriyoruz.
+
+Kullanici sifresini degistirme
+
+https://www.syslogs.org/komut-satirindan-mysql-kullanici-sifresi-degistirmek/
+1 – ) Shell üzerinden mysql sunucusuna root kullanicisi ile login olun:
+
+# mysql -u root -p
+Enter password:
+mysql>
+2 -) Kullanici bilgileri vs. gibi yapilandirma bilgilerinin tutuldugu mysql db’sine erisim saglayin:
+
+mysql> use mysql;
+3 – ) Adi “falanca” olan kullaniciya ait sifreyi “yenisifre” olarak degistirmek için asagidaki örnek update komutunu kullanabiliriz.
+
+mysql> update user set password=PASSWORD("yenisifre") where User='falanca';
+mysql> flush privileges;
+
+
+
+pacden bu komutu yükle
+pacman -S mingw-w64-x86_64-libmariadbclient
+
+asteriks içerisinde kayitli ses dosyalari
+
+[root@freepbx /]# cd var/spool/asterisk/monitor/
+[root@freepbx monitor]# ss
+-bash: ss: command not found
+[root@freepbx monitor]# ls
+2024
+[root@freepbx monitor]# cd 2024/
+[root@freepbx 2024]# ls
+11
+[root@freepbx 2024]# cd 11/
+[root@freepbx 11]# ls
+17
+[root@freepbx 11]# cd 17/
+[root@freepbx 17]# ls
+internal-1100-1101-20241117-164137-1731861697.2.wav  internal-1100-1101-20241117-164839-1731862119.0.wav
+
+
+libssh yüklemek için
+pacman -S mingw-w64-x86_64-libssh
+
+
+
+ubuntu içerisinde asterisk mariadb php kurulumu
+https://sangomakb.atlassian.net/wiki/spaces/FP/pages/10682545/How+to+Install+FreePBX+17+on+Debian+12+with+Asterisk+21
+
+bu çalisiyor
+https://www.atlantic.net/vps-hosting/how-to-install-asterisk-and-freepbx-on-ubuntu/
+
+
